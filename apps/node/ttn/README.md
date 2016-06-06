@@ -46,6 +46,12 @@ client.on('error', function (err) {
 client.close()
 ```
 
+The `fields` on the `uplink` event will be either filled with:
+
+- The result of the payload function tranformation if there are payload
+  functions set for the application, or
+- The plain, untransformed payload.
+
 
 ## API
 
