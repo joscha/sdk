@@ -1,8 +1,25 @@
 
 # Node RED TTN node
 
+
 The Node RED TTN node emits messages and activation events from a specific
 application.
+
+## Installation
+
+To install you do
+
+```
+npm install -g node-red-contrib-ttn
+```
+or
+```
+cd ~/.node-red
+npm install node-red-contrib-ttn
+```
+and restart node-RED. The node should now be visible in the *input* category.
+
+## Usage
 
 ![Node](node.png)
 
