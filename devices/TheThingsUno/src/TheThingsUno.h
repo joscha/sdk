@@ -6,6 +6,7 @@
 
 #include <Arduino.h>
 #include <Stream.h>
+#include "lora-serialization/src/LoraMessage.h"
 
 #define DEFAULT_WAIT_TIME 120
 #define DEFAULT_SF 7
@@ -50,6 +51,7 @@ class TheThingsUno
     bool join(const byte appEui[8], const byte appKey[16]);
     int sendBytes(const byte* buffer, int length, int port = 1, bool confirm = false);
     int sendString(String message, int port = 1, bool confirm = false);
+    int sendMessage(LoraMessage& message, int port = 1, bool confirm = false);
     void showStatus();
 };
 

@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "TheThingsUno.h"
+#include "lora-serialization/src/LoraMessage.h"
 
 void TheThingsUno::init(Stream& modemStream, Stream& debugStream) {
   this->modemStream = &modemStream;
@@ -198,6 +199,10 @@ bool TheThingsUno::join(const byte appEui[8], const byte appKey[16]) {
 
   debugPrintLn("Join accepted. Status: " + readValue("mac get status"));
   return true;
+}
+
+int TheThingsUno::sendMessage(LoraMessage& message, int port, bool confirm) {
+    return sendBytes(message.getBytes(), message.getLength(), port, confirm);
 }
 
 int TheThingsUno::sendBytes(const byte* buffer, int length, int port, bool confirm) {

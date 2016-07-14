@@ -1,6 +1,8 @@
 //This library is not installed by default, istall from library manager
 #include "DHT.h" //DHT sensor library by Adafruit, supports DHT11/21/22 Sensors, more info: https://github.com/adafruit/DHT-sensor-library
 #include "TheThingsUno.h"
+#include "lora-serialization/src/LoraEncoder.cpp"
+#include "lora-serialization/src/LoraMessage.cpp"
 
 // Set your AppEUI and AppKey
 const byte appEui[8] = { <insert AppEui> }; //for example: {0x70, 0xB3, 0xD5, 0x7E, 0xE0, 0xE0, 0x01, 0x4A1};
@@ -52,20 +54,21 @@ void setup() {
 
 void loop() {
 
-  uint16_t temperature = dht.readTemperature(false)*100; //false = temp-Celsius //true = temp-farenheit
-  uint16_t humidity = dht.readHumidity(false)*100;
-  //put data into the data array
-  data[0] = highByte(temperature);
-  data[1] = lowByte(temperature);
-  data[2] = highByte(humidity);
-  data[3] = lowByte(humidity);
+  float temperature = dht.readTemperature(false); //false = temp-Celsius //true = temp-farenheit
+  float humidity = dht.readHumidity(false);
+
+  //put data into the message
+  LoraMessage message;
+  message
+    .addTemperature(temperature)
+    .addHumidity(humidity);
   //debug print
   debugPrint("Transmitting Temperature: ");
   debugPrintLn(temperature);
   debugPrint("Humidity: ");
   debugPrintLn(humidity);
   //send data
-  ttu.sendBytes(data, sizeof(data));
+  ttu.sendMessage(message);
 
   delay(20000);
 }
